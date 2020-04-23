@@ -1,1 +1,35 @@
+from selenium import webdriver
+from selenium.webdriver.common import keys
+import time
 
+Chrome = webdriver.Chrome('/Users/apple/Downloads/chromedriver')
+Chrome.get('https://soundcloud.com/negzzzz/sets/negar')
+Chrome.maximize_window()
+
+SCROLL_PAUSE_TIME = 0.5
+
+# Get scroll height
+last_height = Chrome.execute_script("return document.body.scrollHeight")
+
+while True:
+    # Scroll down to bottom
+    Chrome.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+    # Wait to load page
+    time.sleep(SCROLL_PAUSE_TIME)
+
+    # Calculate new scroll height and compare with last scroll height
+    new_height = Chrome.execute_script("return document.body.scrollHeight")
+    if new_height == last_height:
+        break
+    last_height = new_height
+
+
+time.sleep(10)
+Chrome.find_element_by_xpath('//*[@id="app"]/div[4]/section/div/div[3]/button[2]').click()
+Chrome.find_element_by_xpath('//*[@id="app"]/div[4]/section/div/div[3]/div[1]/button').click()
+Chrome.find_element_by_xpath('//*[@id="app"]/div[4]/section/div/div[3]/button[3]').click()
+Chrome.save_screenshot('axfortest.png')
+Chrome.minimize_window()
+time.sleep(3600)   # I want to listen to the music just for 1 hour!
+Chrome.close()
